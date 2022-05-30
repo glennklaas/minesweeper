@@ -1,3 +1,4 @@
 
 
-Bug 6,9
+- Bug 6,9 when clearing this tile first.
+- Bug, flagging revealed first column or last column results in flag covered count changing 
