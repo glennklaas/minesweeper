@@ -8,9 +8,17 @@
 
 Grid::Grid(int nbr_mines) {
 
+	
 	// Load the game textures into the map for later retrieval
 	load_textures();
+	reset_game();
 	
+}
+
+void Grid::reset_game(void) {
+	
+	cells.clear();
+
 	first_cell_revealed = false;
 	this->mines_covered = 0;
 
@@ -22,7 +30,7 @@ Grid::Grid(int nbr_mines) {
 			cells.push_back(cell);
 		}
 	}
-	
+
 }
 
 game_state_type::game_state Grid::reveal_cell(int x, int y) {
@@ -149,6 +157,35 @@ void Grid::draw(sf::RenderWindow& i_mainWindow) {
 	emoji_shape.setPosition(WINDOW_WIDTH/2 - 26 ,SCOREBOARD_HEIGHT/2 - 26);
 	emoji_shape.setTexture( &textures.find("smile_up")->second );
 	i_mainWindow.draw(emoji_shape);
+
+	// Update count of uncovered mines
+	int numMinesNotCovered =  NUM_MINES - mines_covered;
+	int numMinesNotCovered_1 = numMinesNotCovered % 10;
+	int numMinesNotCovered_10  = numMinesNotCovered % 100/10;
+	int numMinesNotCovered_100 = numMinesNotCovered % 1000/100;
+
+	sf::RectangleShape num1(sf::Vector2f(64,64));
+	sf::RectangleShape num2(sf::Vector2f(64,64));;
+	sf::RectangleShape num3(sf::Vector2f(64,64));;
+
+	// Update the index to 10 when place value is 0 to match the sprite layout.  "0" = 10D
+	numMinesNotCovered_100 = (numMinesNotCovered_100==0) ? 10 : numMinesNotCovered_100;
+	numMinesNotCovered_10 = (numMinesNotCovered_10==0) ? 10 : numMinesNotCovered_10;
+	numMinesNotCovered_1 = (numMinesNotCovered_1==0) ? 10 : numMinesNotCovered_1;
+
+	// Get the correct display sprite. For instance, "5D" for display digit 5.
+	num1.setTexture( &textures.find(std::to_string(numMinesNotCovered_100) + "D")->second );
+	num2.setTexture( &textures.find(std::to_string(numMinesNotCovered_10) + "D")->second );
+	num3.setTexture( &textures.find(std::to_string(numMinesNotCovered_1) + "D")->second );
+
+	num1.setPosition(0,10 );
+	num2.setPosition(64,10);
+	num3.setPosition(128,10);
+
+	i_mainWindow.draw(num1);
+	i_mainWindow.draw(num2);
+	i_mainWindow.draw(num3);
+	
 
 	// Draw the grid
 	sf::RectangleShape cell_shape(sf::Vector2f(CELL_SIZE - 1, CELL_SIZE - 1));

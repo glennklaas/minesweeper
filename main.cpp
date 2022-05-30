@@ -72,6 +72,7 @@ int main() {
                         
                         // Reset button was pressed in scoreboard region
                         std::cout << "Clicked in scoreboard." << std::endl;
+                        grid.reset_game();
 
                     }
                 } 
