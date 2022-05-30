@@ -6,6 +6,24 @@
 #include <iostream>
 #include <string>
 
+Grid::Grid(int nbr_mines) {
+
+	// Load the game textures into the map for later retrieval
+	load_textures();
+	
+	first_cell_revealed = false;
+	this->mines_covered = 0;
+
+	//state = game_state_type::running;
+
+	for (int y = 0; y < GRID_SIZE; y++) {
+		for (int x = 0; x < GRID_SIZE; x++) {
+			Cell cell(x,y);
+			cells.push_back(cell);
+		}
+	}
+	
+}
 
 game_state_type::game_state Grid::reveal_cell(int x, int y) {
 	
@@ -70,24 +88,6 @@ game_state_type::game_state Grid::reveal_cell(int x, int y) {
 	
 	// Tell the cell that was clicked to get in here to reveal itself
 	return cells[x + GRID_SIZE * y].reveal_cell(cells);
-	
-}
-
-Grid::Grid(int nbr_mines) {
-
-	// Load the game textures into the map for later retrieval
-	load_textures();
-	
-	first_cell_revealed = false;
-
-	//state = game_state_type::running;
-
-	for (int y = 0; y < GRID_SIZE; y++) {
-		for (int x = 0; x < GRID_SIZE; x++) {
-			Cell cell(x,y);
-			cells.push_back(cell);
-		}
-	}
 	
 }
 
@@ -200,11 +200,13 @@ void Grid::toggle_flag(int i_x, int i_y) {
 		if (cells[i_x + GRID_SIZE * i_y].get_has_flag()) { // Flag -> Question
 			cells[i_x + GRID_SIZE * i_y].set_has_flag(false);
 			cells[i_x + GRID_SIZE * i_y].set_has_question(true);
+			mines_covered -= 1;
 		}else if (cells[i_x + GRID_SIZE * i_y].get_has_question()) { // Question - > Revealed
 			cells[i_x + GRID_SIZE * i_y].set_has_flag(false);
 			cells[i_x + GRID_SIZE * i_y].set_has_question(false);
 		}else {
 			cells[i_x + GRID_SIZE * i_y].set_has_flag(true); // Revealed -> Flag
+			mines_covered += 1;
 		}
 	}
 }
@@ -219,3 +221,20 @@ void Grid::reveal_all_mines(game_state_type::game_state state) {
 	}
 }
 
+void Grid::process_scoreboard_click(float x, float y) {
+
+	if(x){
+
+	
+	}
+}
+
+int Grid::get_mines_covered() {
+
+	return this->mines_covered;
+}
+
+void Grid::set_mines_covered(int nbr_mines) {
+
+	this->mines_covered = nbr_mines;
+}

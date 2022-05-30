@@ -74,14 +74,14 @@ int main() {
                         std::cout << "Clicked in scoreboard." << std::endl;
 
                     }
-                }
-                    
+                } 
             }
 
             // Right button pressed - Set or clear a flag
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 if (position.x >= 0 && position.y >= 0 && position.x <= GRID_SIZE * CELL_SIZE && position.y <= SCOREBOARD_HEIGHT * CELL_SIZE) // within the 
                     grid.toggle_flag((position.x) / CELL_SIZE, (position.y) / CELL_SIZE);
+                    std::cout << NUM_MINES - grid.get_mines_covered() << std::endl;
             }
 
         }
@@ -90,7 +90,6 @@ int main() {
         mainWindow.clear();
         grid.draw(mainWindow);       
         mainWindow.display();
-
     }
 
     return 0;

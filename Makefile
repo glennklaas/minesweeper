@@ -10,7 +10,7 @@ main: main.cpp Grid.cpp Cell.cpp Global.hpp Grid.hpp Cell.hpp
 	$(CXX) *.cpp $(CXXFLAGS) -I$(INCLUDES) $(LDFLAGS) -L$(LIBS) -o main
 
 clean:
-	$(RM) main *.o
+	$(RM) -r main *.o main.dSYM
 
 run: main
 	./main
